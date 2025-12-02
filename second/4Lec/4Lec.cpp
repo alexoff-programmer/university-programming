@@ -128,7 +128,7 @@ int main()
     cout << "prod1 = " << prod(2e0, 4e0, 3e0, 0e0) << "\n";
     cout << "prod1 = " << prod(1.5, 2.0, 3.0, 0.0) << "\n";
 
-    miniprintf("decimal - %d, float - %f", 5, 5.128);
+    miniprintf("decimal - %d, float - %f", 5, 5.127);
 }
 
 //void func1()
