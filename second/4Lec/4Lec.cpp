@@ -5,8 +5,30 @@
 #include <cstdarg>
 using namespace std;
 typedef struct {
-    int x, y;
-} Point;
+    double x, y;
+} Point, *pPoint;
+
+
+double dist(pPoint A, pPoint B) {
+    double d;
+    d = sqrt(pow((A->x - B->x), 2) + pow((A->y - B->y), 2));
+    return d;
+}
+
+Point make(double x, double y) {
+    Point temp;
+    temp.x = x;
+    temp.y = y;
+    return temp;
+}
+
+Point mid(Point A, Point B) {
+    return make((A.x + B.x) / 2, (A.y + B.y) / 2);
+}
+
+void show(Point A) {
+    cout << "x(" << A.x << ") y(" << A.y << ")" << endl;
+}
 
 int sum(int k, ...) {
     va_list args;
@@ -110,6 +132,22 @@ void miniprintf(const char* format, ...) {
                 break;
             }
         }
+        /*else if (*format == '\\') {
+            format++;
+            switch (*format) {
+            case 't':
+                putchar('\t');
+                break;
+            case 'n':
+                putchar('\n');
+                break;
+            }
+            case '\\':
+                putchar('\\');
+                break;
+            default:
+                putchar()
+        }*/
         else {
             putchar(*format);
         }
@@ -118,63 +156,50 @@ void miniprintf(const char* format, ...) {
     va_end(args);
 }
 
+void miniprint(const char* format, ...) {
+    va_list list;
+    va_start(list, format);
+    while (*format != '\0') {
+        if (*format == '%') {
+            format++;
+            switch (*format) {
+            case 'd':
+                printf("%d", va_arg(list, int));
+                break;
+            case 'f':
+                printf("%f", va_arg(list, double));
+                break;
+            default:
+                putchar('%');
+                putchar(*format);
+                break;
+            }
+        }
+        else 
+            putchar(*format);
+        format++;
+    }
+    va_end(list);
+}
+
 int main()
 {
-    Point A{ 1, 2 }, B{ 2, 3 }, C{ 4, 5 }, D{ 6, 7 };
+    /*Point A{ 1, 2 }, B{ 2, 3 }, C{ 4, 5 }, D{ 6, 7 };
     f(A, B, C, D);
     cout << "-----------------------------------------\n";
     f1(A, B, C, D);
 
     cout << "prod1 = " << prod(2e0, 4e0, 3e0, 0e0) << "\n";
-    cout << "prod1 = " << prod(1.5, 2.0, 3.0, 0.0) << "\n";
+    cout << "prod1 = " << prod(1.5, 2.0, 3.0, 0.0) << "\n";*/
 
     miniprintf("decimal - %d, float - %f", 5, 5.127);
+    miniprint("decimal - %d, float - %f", 5, 5.127);
+
+    Point A{ 0., -3. }, B{ 0., 1. };
+    pPoint pA = &A, pB = &B;
+
+    cout << "\n" << "AB = " << dist(pA, pB) << endl;
+    show(A);
+    show(B);
+    show(mid(A, B));
 }
-
-//void func1()
-//{
-//    char s[100];
-//    cout << "Введите число: ";
-//    cin >> s;
-//
-//    int i = 0;
-//    int intDigits = 0;
-//    bool beforeDot = true;
-//
-//    // Подсчёт цифр в целой части
-//    while (s[i] != '\0')
-//    {
-//        if (s[i] == '.')
-//        {
-//            beforeDot = false;
-//            break;
-//        }
-//        if (s[i] != '-') intDigits++;
-//        i++;
-//    }
-//
-//    cout << "Целая часть числа " << s << " содержит " << intDigits << " цифр." << endl;
-//
-//    // Печать строки в обратном порядке
-//    int len = 0;
-//    while (s[len] != '\0') len++;
-//
-//    cout << "Обратный порядок: ";
-//    for (int j = len - 1; j >= 0; j--)
-//    {
-//        cout << s[j];
-//    }
-//
-//    cout << endl;
-//}
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
