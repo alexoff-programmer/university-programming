@@ -1,4 +1,0 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(538,5): warning MSB8028: промежуточный каталог (x64\Debug\) содержит файлы, которые используются совместно с другим проектом (BubbleSort.vcxproj).  Это может привести к ошибкам очистки и перестроения.
-  BubbleSort.cpp
-C:\Users\Пользователь\OneDrive\Документы\University\Работы\Программирование\2-ой курс\BubbleSort\BubbleSort\BubbleSort.cpp(54,9): warning C4101: j: неиспользованная локальная переменная
-  BubbleSort.vcxproj -> C:\Users\Пользователь\OneDrive\Документы\University\Работы\Программирование\2-ой курс\BubbleSort\x64\Debug\Массивы.exe
