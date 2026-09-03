@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="listlec.vcxproj" Id="9599db0d-020c-439a-84f7-2790889af4d6" />
+</Solution>

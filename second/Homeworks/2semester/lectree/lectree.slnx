@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="lectree.vcxproj" Id="fd1c911b-9623-4bbe-a2ab-01a5557fd1aa" />
+</Solution>

@@ -2,80 +2,10 @@
 
 // ПРОСТОЙ УРОВЕНЬ
 
-#include <iostream>
-#include <random>
-#include <string>
+#include "Stack.h"
+#include "Stack Tasks.h"
 #define N 20
 using namespace std;
-
-typedef struct Node {
-    char value;
-    struct Node* next;
-} *pNode;
-
-typedef struct Stack {
-    pNode top;
-    int len;
-} *pStack;
-
-pStack createStack() {
-    pStack pS = (pStack)malloc(sizeof(Stack));
-    if (pS) {
-        pS->top = NULL;
-        pS->len = 0;
-    }
-    return pS;
-}
-
-int isEmpty(pStack pS) {
-    if (pS->top && pS->len) return 0;
-    return 1;
-}
-
-int push(pStack pS, int c) {
-    pNode p = (pNode)malloc(sizeof(Node));
-    if (p) {
-        p->value = c;
-        p->next = pS->top;
-        pS->top = p;
-        pS->len++;
-        return 1;
-    }
-    return 0;
-}
-
-int pop(pStack pS) {
-    pNode p = pS->top;
-    int c = p->value;
-    pS->top = p->next;
-    free(p);
-    pS->len--;
-    return c;
-}
-
-void showStack(pStack pS) {
-    pStack qS = createStack();
-    int c;
-    if (isEmpty(pS)) printf("Stack is empty\n");
-    else {
-        while (!isEmpty(pS)) {
-            c = pop(pS);
-            cout << c << " ";
-            push(qS, c);
-        }
-        cout << "\n";
-        while (!isEmpty(qS)) {
-            c = pop(qS);
-            push(pS, c);
-        }
-    }
-}
-
-void clearStack(pStack pS) {
-    while (!isEmpty(pS)) {
-        pop(pS);
-    }
-}
 
 // Просто генератор случайных чисел для заполнения стека
 
@@ -84,6 +14,20 @@ void genStack(pStack stack, mt19937 &gen, uniform_int_distribution<int> &dist) {
     for (int i = 0; i < N; i++) {
         push(stack, dist(gen));
     }
+}
+
+// Генератор файла с текстом
+
+ofstream genTextFile(string name, string str) {
+    ofstream File(name);
+    if (File.is_open()) {
+        File << str;
+        cout << "File is created." << endl;
+    }
+    else {
+        cout << "Something is went wrong..." << endl;
+    }
+    return File;
 }
 
 /*
@@ -294,24 +238,186 @@ int task5(pStack stack, pStack service, mt19937 &gen, uniform_int_distribution<i
     return 0;
 }
 
-int main()
-{
-    setlocale(LC_ALL, "ru_ru");
+/*
+6. Вывести содержимое стека, начиная с обратного конца. В общем случае необходимо извлекать элементы стека по 
+одному и вставлять их последовательно в другой стек, затем распечатать элементы из второго стека в прямом порядке.
+*/
 
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(-50, 50);
-    cout << "Подключили генератор...\n";
+int task6(pStack stack, pStack service, mt19937& gen, uniform_int_distribution<int>& dist) {
+    cout << "\nЗАДАЧА 6\n";
+    genStack(stack, gen, dist);
 
+    cout << "Изначальный стек:\n";
+    showStack(stack);
+
+    cout << "Процесс сортировки...\n";
+    while (!isEmpty(stack)) {
+        push(service, pop(stack));
+    }
+    cout << "Процесс сортировки завершён!\n";
+    cout << "----------------------------\n";
+    showStack(service);
+
+    clearStack(service);
+    return 0;
+}
+
+/*
+7. Преобразовать текстовый файл по следующему правилу. Если вновь считанный символ - "стирающий символ" (#), 
+то удаляется один стоящий перед ним символ. Если вновь считанный символ является "символом-убийцей" (@), 
+то удаляются все символы, находящиеся перед ним. Если считанный символ не является ни символом-убийцей, 
+ни стирающим символом, то он помещается в стек. Если вновь считанный символ - стирающий символ, то удаляется 
+символ в вершине стека. В случае, когда считанный символ является символом-убийцей, редактор очищает весь стек.
+*/
+
+int task7(pStack stack, pStack service, mt19937& gen, uniform_int_distribution<int>& dist) {
+    cout << "\nЗАДАЧА 7\n";
+    string fileName = "task7.txt";
+    string str = "Ва@жный #э#т#а#п#.# Пока вы не закроете файл, данные могут оставаться в оперативной памяти (буфере) и не появиться на диске сразу.";
+
+    genTextFile(fileName, str);
+    ifstream file(fileName);
+
+    cout << "Процесс наполнения стека и очистки...\n";
+    if (file.is_open()) {
+        char c;
+        while (file.get(c)) {
+            switch (c) {
+                case '#': pop(stack); break;
+                case '@': clearStack(stack); break;
+                default: push(stack, c);
+            }
+        }
+    }
+
+    cout << "Подготовка стека к отображению...\n";
+    while (!isEmpty(stack)) {
+        push(service, pop(stack));
+    }
+    cout << "Процесс обработки завершён!\n";
+    cout << "----------------------------\n";
+    cout << "Изначальная строка:\n" << str << endl;
+    cout << "Форматированная строка:\n";
+    while (!isEmpty(service)) {
+        char c = pop(service);
+        cout << c;
+        push(stack, c);
+    }
+
+    clearStack(stack);
+    return 0;
+}
+
+/*
+8. Создать стек из случайных целых чисел и поменять местами крайние элементы.
+*/
+
+int task8(pStack stack, pStack service, mt19937& gen, uniform_int_distribution<int>& dist) {
+    cout << "\nЗАДАЧА 8\n";
+    genStack(stack, gen, dist);
+
+    int first; int last;
+
+    cout << "Изначальный стек:\n";
+    showStack(stack);
+
+    cout << "Процесс сортировки...\n";
+    last = pop(stack);
+    while (!isEmpty(stack)) {
+        first = pop(stack);
+        if (isEmpty(stack))
+            break;
+        push(service, first);
+    }
+    push(stack, last);
+    while (!isEmpty(service)) {
+        push(stack, pop(service));
+    }
+    push(stack, first);
+
+    cout << "Процесс сортировки завершён!\n";
+    cout << "----------------------------\n";
+    
+    cout << "Стек, крайние элементы которого поменялись местами:\n";
+    showStack(stack);
+
+    clearStack(stack);
+    return 0;
+}
+
+/*
+9. Определить, является ли произвольная последовательность круглых, квадратных и фигурных скобок, правильно построенной. 
+{ [ ] ( [ { { ( ) } } ] ) } правильно построенная.
+*/
+
+bool isStartBracket(char c) {
+    return (c == '(' || c == '{' || c == '[');
+}
+
+bool isEndBracket(char c) {
+    return (c == ']' || c == '}' || c == ')');
+}
+
+int task9(string seq) {
+    cout << "\nЗАДАЧА 9\n";
+    cout << "Получена последовательность:\n" + seq << endl;
+
+    char temp;
     pStack stack = createStack();
-    pStack service = createStack();
-    cout << "Создали стек...\n";
+    for (char c : seq) {
+        if (isStartBracket(c)) {
+            push(stack, c);
+            continue;
+        }
+        if (!isEndBracket(c))
+            continue;
+        temp = pop(stack);
+		if (c == '}' && temp != '{' || c == ')' && temp != '(' || c == ']' && temp != '[') {
+            cout << "Последовательность скобок неверна.";
+            return 0;
+        }
+    }
 
-    task1(stack, service, gen, dist);
-    task2(stack, service, gen, dist);
-    task3(stack, service, gen, dist);
-    task4(stack, service, gen, dist);
-    task5(stack, service, gen, dist);
+    if (isEmpty(stack)) {
+        cout << "Последовательность скобок верна";
+    }
+    else {
+        cout << "Последовательность скобок неверна.";
+    }
 
+    free(stack);
+    return 0;
+}
+
+/*
+10. Применить стек для вычисления выражения а) (6+8)*5-6/2; b) (5+7)*3-4*3.
+Одной из форм представления выражений является польская инверсная запись, задающая выражение так, что
+операции в нем записываются в порядке выполнения, а операнды находятся непосредственно перед операцией.
+Например, выражение (6+8)*5-6/2 в польской инверсной записи имеет вид 6 8 + 5 * 6 2 / - .Особенность такой записи
+состоит в том, что значение выражения можно вычислить за один просмотр записи слева направо, используя стек.
+Каждое новое число заносится в стек, а операции выполняются над верхними элементами стека, заменяя эти элементы
+результатом операции. Для приведенного выражения динамика изменения стека будет иметь вид S = <; <6>; <6,8>;
+<14>; <14,5>; <70>; <70,6>; <70,6,2>; <70,3>; <67>,
+*/
+
+
+int task10(string problem) {
+	pStack stack = createStack();
+    for (char c : problem) {
+		if (c >= '0' && c <= '9') {
+            push(stack, c - '0');
+            continue;
+        }
+		int b = pop(stack);
+		int a = pop(stack);
+        switch (c) {
+            case '+': push(stack, a + b); break;
+            case '-': push(stack, a - b); break;
+            case '*': push(stack, a * b); break;
+            case '/': push(stack, a / b); break;
+		}
+    }
+	cout << (int) pop(stack);
+	free(stack);
     return 0;
 }

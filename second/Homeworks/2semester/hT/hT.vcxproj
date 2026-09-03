@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e6882491-d907-44cf-aa56-1cb5b2a8b1cc}</ProjectGuid>
-    <RootNamespace>StackTasks</RootNamespace>
+    <ProjectGuid>{490ec035-b04d-4da6-a0f0-357ef3802100}</ProjectGuid>
+    <RootNamespace>hT</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,13 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Run.cpp" />
-    <ClCompile Include="Stack Tasks.cpp" />
-    <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="hT.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Stack Tasks.h" />
-    <ClInclude Include="Stack.h" />
+    <ClInclude Include="ht.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

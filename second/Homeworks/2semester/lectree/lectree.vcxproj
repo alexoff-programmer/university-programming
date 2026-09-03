@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e6882491-d907-44cf-aa56-1cb5b2a8b1cc}</ProjectGuid>
-    <RootNamespace>StackTasks</RootNamespace>
+    <ProjectGuid>{fd1c911b-9623-4bbe-a2ab-01a5557fd1aa}</ProjectGuid>
+    <RootNamespace>lectree</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,13 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="db.cpp" />
+    <ClCompile Include="lectree.cpp" />
     <ClCompile Include="Run.cpp" />
-    <ClCompile Include="Stack Tasks.cpp" />
-    <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="tasks.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Stack Tasks.h" />
-    <ClInclude Include="Stack.h" />
+    <ClInclude Include="db.h" />
+    <ClInclude Include="tasks.h" />
+    <ClInclude Include="tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
